@@ -25,6 +25,7 @@
     - [[#org][Org]]
     - [[#macos][MacOS]]
     - [[#toc-org][Toc-org]]
+    - [[#java][Java]]
 - [[#post-initialisation][Post Initialisation]]
 
 * Installation
@@ -705,6 +706,26 @@ Install and load the =toc-org= package when org mode is loaded.
 (use-package toc-org
   :after org
   :init (add-hook 'org-mode-hook #'toc-org-enable))
+#+END_SRC
+
+*** Java
+Install eglot-java
+#+BEGIN_SRC emacs-lisp
+(use-package eglot)
+(use-package eglot-java)
+(add-to-list 'eglot-server-programs
+             '(java-mode . ("~/emacsdir/eclipse.jdt.ls/bin/jdtls"
+                            "-configuration" "~/emacsdir/eclipse.jdt.ls/config_linux"
+                            "-data" "~/emacsdir/eclipse.jdt.ls/workspace")))
+
+(add-hook 'java-mode-hook 'eglot-java-mode)
+(with-eval-after-load 'eglot-java
+  (define-key eglot-java-mode-map (kbd "C-c l n") #'eglot-java-file-new)
+  (define-key eglot-java-mode-map (kbd "C-c l x") #'eglot-java-run-main)
+  (define-key eglot-java-mode-map (kbd "C-c l t") #'eglot-java-run-test)
+  (define-key eglot-java-mode-map (kbd "C-c l N") #'eglot-java-project-new)
+  (define-key eglot-java-mode-map (kbd "C-c l T") #'eglot-java-project-build-task)
+  (define-key eglot-java-mode-map (kbd "C-c l R") #'eglot-java-project-build-refresh))
 #+END_SRC
 
 * Post Initialisation
